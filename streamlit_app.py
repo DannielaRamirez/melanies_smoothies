@@ -18,7 +18,7 @@ session = cnx.session()
 my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT_NAME'), col('SEARCH_ON'))
 st.dataframe(data= my_dataframe, use_container_with=True)
 st.write(my_dataframe)
-st.stop()
+
 
 
 ingrediaents_list = st.multiselect(
@@ -34,6 +34,7 @@ if ingrediaents_list:
     for x in ingrediaents_list:
         ingredients_string += x + ' '
         smoothiefroot_response = requests.get("https://my.smoothiefroot.com/api/fruit/" + x)
+        st.write('Going to request')
         sf_df = st.dataframe(data=smoothiefroot_response.json(), use_container_width=True)
 
         
@@ -46,6 +47,4 @@ if ingrediaents_list:
         session.sql(my_insert_stmt).collect()
         st.success(f'Your Smoothie is ordered, {name_on_order}!', icon="✅")
 
-#smoothiefroot_response = requests.get("https://my.smoothiefroot.com/api/fruit/watermelon")
-#st.text(smoothiefroot_response.json())
-#sf_df = st.dataframe(data=smoothiefroot_response.json(), use_container_width=True)
+
